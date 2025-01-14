@@ -14,7 +14,7 @@ var value: float = 0.0:
 	set(value_in):
 		value = clampf(value_in, 0.0, max_total())
 		value_changed.emit()
-		if current_total() <= 0.0: value_zero.emit()
+		if value_total() <= 0.0: value_zero.emit()
 
 ## Base max value if stat
 @export var max_value: float = 1.0:
@@ -35,20 +35,20 @@ var value: float = 0.0:
 			value_changed.emit()
 
 ## Temporary increase in stat. Can go over max_total
-@export var temp: float = 0.0:
+@export var temp_value: float = 0.0:
 	set(value_in):
-		temp = max(0.0, value_in)
+		temp_value = max(0.0, value_in)
 		value_changed.emit()
-		if current_total() <= 0.0: value_zero.emit()
+		if value_total() <= 0.0: value_zero.emit()
 
 ## Total of maxium stat with bonus
 func max_total() -> float:
 	return max_value + max_bonus
 
 ## Total of current value with temp
-func current_total() -> float:
-	return value + temp
+func value_total() -> float:
+	return value + temp_value
 
 ## Print for debug purposes
 func _print_stat():
-	print("%s(%s+%s) / %s(%s+%s)" % [current_total(), value, temp, max_total(), max_value, max_bonus])
+	print("%s(%s+%s) / %s(%s+%s)" % [value_total(), value, temp_value, max_total(), max_value, max_bonus])
